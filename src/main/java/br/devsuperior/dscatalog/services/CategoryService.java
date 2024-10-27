@@ -6,6 +6,7 @@ import br.devsuperior.dscatalog.entities.Category;
 import br.devsuperior.dscatalog.exceptions.NotFoundException;
 import br.devsuperior.dscatalog.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,14 @@ public class CategoryService {
         return new CategoryDTO(entity);
     }
 
+    @Transactional
+    public CategoryDTO insert(CategoryDTO categoryDTO) {
+            Category category = new Category();
+            category.setName(categoryDTO.getName());
+             category = repository.save(category);
+        return new CategoryDTO(category);
+
+    }
 }
 
 
