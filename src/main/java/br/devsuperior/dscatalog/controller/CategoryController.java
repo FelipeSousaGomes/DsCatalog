@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.smartcardio.CardTerminal;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +38,17 @@ public class CategoryController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(categoryDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(categoryDTO);
+    }
+
+    @PutMapping("/{id}" )
+    public ResponseEntity<CategoryDTO> update(@RequestBody CategoryDTO dto, @PathVariable Long id ){
+        return ResponseEntity.ok().body(service.udpate(dto,id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CategoryDTO> delete(@PathVariable Long id ){
+        service.delete(id);
+       return ResponseEntity.noContent().build();
     }
 
 }
