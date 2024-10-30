@@ -5,6 +5,7 @@ import br.devsuperior.dscatalog.entities.Product;
 import jakarta.persistence.Column;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ public class ProductDTO {
     private String imgUrl;
     private Instant date;
 
-    private Set<CategoryDTO> categories;
+    private Set<CategoryDTO> categories = new HashSet<>();
 
 
     public ProductDTO(){}
