@@ -3,10 +3,13 @@ package br.devsuperior.dscatalog.controller.handlers;
 import br.devsuperior.dscatalog.exceptions.DataBaseException;
 import br.devsuperior.dscatalog.exceptions.NotFoundException;
 import br.devsuperior.dscatalog.exceptions.StandardError;
+import br.devsuperior.dscatalog.exceptions.ValidationError;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -34,6 +37,21 @@ public class ResourceExceptionHandler {
         err.setError("Database exception");
         err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ValidationError> validation (MethodArgumentNotValidException e, HttpServletRequest request) {
+       ValidationError err = new ValidationError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
+        err.setError("Validation exception");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+                    err.addFieldError(fieldError.getField(), fieldError.getDefaultMessage());
+        }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
