@@ -48,7 +48,7 @@ public class ProductControllerIntegration {
 
         resultActions.andExpect(status().isOk());
         resultActions.andExpect(jsonPath("$.totalElements").value(countTotalProducts));
-        resultActions.andExpect(jsonPath("$.content[0].name").value("Mackbook Pro"));
+        resultActions.andExpect(jsonPath("$.content[0].name").value("Macbook Pro"));
     }
 
 
