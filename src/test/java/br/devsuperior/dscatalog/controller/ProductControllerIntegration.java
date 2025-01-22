@@ -31,13 +31,29 @@ public class ProductControllerIntegration {
     private Long existingId;
     private Long nonExistingId;
     private Long countTotalProducts;
+
+    @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private TokenUtil tokenUtil;
+
+    private String username, password, bearerToken;
+
+
+
 
     @BeforeEach
     void setUp() throws Exception{
         existingId = 1L;
-        nonExistingId = 2111L;
+        nonExistingId = 1000L;
         countTotalProducts = 25L;
+
+
+        username = "maria@gmail.com";
+        password = "123456";
+
+        bearerToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
 
     }
 
@@ -61,6 +77,7 @@ public class ProductControllerIntegration {
         String expectedDescription = productDTO.getDescription();
 
         ResultActions resultActions = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + bearerToken)
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
@@ -76,13 +93,13 @@ public class ProductControllerIntegration {
         ProductDTO productDTO = FactoryProduct.CreateProductDTO();
         String jsonBody = objectMapper.writeValueAsString(productDTO);
 
-        String expectedName = productDTO.getName();
-        String expectedDescription = productDTO.getDescription();
 
         ResultActions resultActions = mockMvc.perform(put("/products/{id}", nonExistingId)
+                .header("Authorization", "Bearer " + bearerToken)
                 .content(jsonBody)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON));
+
 
         resultActions.andExpect(status().isNotFound());
     }

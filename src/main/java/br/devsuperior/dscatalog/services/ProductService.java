@@ -8,6 +8,7 @@ import br.devsuperior.dscatalog.exceptions.DataBaseException;
 import br.devsuperior.dscatalog.exceptions.NotFoundException;
 import br.devsuperior.dscatalog.repositories.CategoryRepository;
 import br.devsuperior.dscatalog.repositories.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -55,7 +56,7 @@ public class ProductService {
         Product Product = repository.getReferenceById(id);
             copyDTOtoEntity(dto,Product);
         return new ProductDTO(Product,Product.getCategories());
-    } catch (NotFoundException e) {
+    } catch (EntityNotFoundException e) {
             throw new NotFoundException("Id not found " + id);
         }
     }
