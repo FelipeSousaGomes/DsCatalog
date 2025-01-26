@@ -7,6 +7,7 @@ import br.devsuperior.dscatalog.DTO.ProductDTO;
 import br.devsuperior.dscatalog.exceptions.DataBaseException;
 import br.devsuperior.dscatalog.exceptions.NotFoundException;
 import br.devsuperior.dscatalog.repositories.FactoryProduct;
+import br.devsuperior.dscatalog.repositories.projections.ProductProjection;
 import br.devsuperior.dscatalog.services.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -58,9 +59,11 @@ public class ProductControllerTests {
         dependentId = 3L;
 
 
+
         productDTO = FactoryProduct.CreateProductDTO();
 
         page = new PageImpl<>(List.of(productDTO));
+
 
         when(productService.findyById(existingId)).thenReturn(productDTO);
         when(productService.findyById(nonExistingId)).thenThrow(NotFoundException.class);

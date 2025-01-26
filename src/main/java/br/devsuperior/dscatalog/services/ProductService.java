@@ -8,17 +8,20 @@ import br.devsuperior.dscatalog.exceptions.DataBaseException;
 import br.devsuperior.dscatalog.exceptions.NotFoundException;
 import br.devsuperior.dscatalog.repositories.CategoryRepository;
 import br.devsuperior.dscatalog.repositories.ProductRepository;
+import br.devsuperior.dscatalog.repositories.projections.ProductProjection;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -31,7 +34,7 @@ public class ProductService {
 
 
     @Transactional(readOnly = true)
-    public Page<ProductDTO> findAllPaged(Pageable pageable) {
+    public Page<ProductDTO> findAll(Pageable pageable) {
         Page<Product> list = repository.findAll(pageable);
         return list.map(x -> new ProductDTO(x,x.getCategories()));
     }
@@ -87,6 +90,15 @@ public class ProductService {
           entity.getCategories().add(category);
 
         }
+    }
+    @Transactional(readOnly = true)
+    public Page<ProductProjection> findAllPaged(String name, String categoryId,Pageable pageable) {
+        List<Long> categoryIds = Arrays.asList();
+       if (!"0".equals(categoryId)) {
+          categoryIds=  Arrays.asList(categoryId.split(",")).stream().map(Long::parseLong).toList();
+       }
+
+        return repository.searchProducts(categoryIds,name,pageable);
     }
 }
 

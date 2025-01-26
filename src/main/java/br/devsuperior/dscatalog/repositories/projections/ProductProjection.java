@@ -1,4 +1,11 @@
 package br.devsuperior.dscatalog.repositories.projections;
 
-public class ProductProjection {
+import jakarta.persistence.criteria.CriteriaBuilder;
+
+public interface ProductProjection {
+
+    Long getId();
+    String getName();
+
+
 }

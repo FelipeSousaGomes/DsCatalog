@@ -27,8 +27,8 @@ public class CategoryController {
    private CategoryService service;
 
     @GetMapping
-    public ResponseEntity<Page<CategoryDTO>>findAll(Pageable pageable){
-        Page<CategoryDTO> listPage = service.findAllPaged(pageable);
+    public ResponseEntity<List<CategoryDTO>>findAll(){
+        List<CategoryDTO> listPage = service.findAll();
 
         return ResponseEntity.ok().body(listPage);
     }
