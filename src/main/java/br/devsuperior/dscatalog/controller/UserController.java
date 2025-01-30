@@ -39,7 +39,6 @@ public class UserController {
         return ResponseEntity.ok().body(service.findyById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
 
     @PostMapping
     public ResponseEntity<UserDTO> insert(@Valid @RequestBody UserInsertDTO UserDTO){

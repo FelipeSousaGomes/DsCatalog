@@ -1,9 +1,6 @@
 package br.devsuperior.dscatalog.controller.handlers;
 
-import br.devsuperior.dscatalog.exceptions.DataBaseException;
-import br.devsuperior.dscatalog.exceptions.NotFoundException;
-import br.devsuperior.dscatalog.exceptions.StandardError;
-import br.devsuperior.dscatalog.exceptions.ValidationError;
+import br.devsuperior.dscatalog.exceptions.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
