@@ -32,11 +32,20 @@ public class UserController {
         return ResponseEntity.ok().body(listPage);
     }
 
+
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
 
     @GetMapping("/{id}" )
     public ResponseEntity<UserDTO>findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.findyById(id));
+    }
+
+
+
+    @GetMapping("/me" )
+    public ResponseEntity<UserDTO>findMe() {
+        return ResponseEntity.ok().body(service.findMe());
     }
 
 

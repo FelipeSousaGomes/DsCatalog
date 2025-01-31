@@ -1,6 +1,7 @@
 package br.devsuperior.dscatalog.controller.handlers;
 
 import br.devsuperior.dscatalog.exceptions.*;
+import br.devsuperior.dscatalog.services.EmailService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,17 @@ public class ResourceExceptionHandler {
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
                     err.addFieldError(fieldError.getField(), fieldError.getDefaultMessage());
         }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<StandardError> EmailException (EmailException e, HttpServletRequest request) {
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.BAD_REQUEST.value());
+        err.setError("Email exception");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 
